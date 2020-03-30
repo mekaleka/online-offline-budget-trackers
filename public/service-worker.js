@@ -13,8 +13,9 @@ self.addEventListener("install", function(event){
         })
     )
 })
+
 self.addEventListener("fetch", function(event){
-    if (event.request.url.includes("/api/"){
+    if (event.request.url.includes("/api/")){
         event.respondWith(
             caches.open(DATA_CACHE_NAME).then(function(cache){
                 return fetch(event.request).then(response => {
