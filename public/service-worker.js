@@ -60,11 +60,25 @@ self.addEventListener("fetch", function(event) {
     return
   }
 
+  // event.respondWith(
+  //   caches.match(event.request).then(function(response){
+  //     return response || fetch(event.request);
+  //   })
+  // );
   event.respondWith(
-    caches.match(event.request).then(function(response){
-      return response || fetch(event.request);
+    fetch(event.request).catch(function(){
+      return caches.match(event.request).then(function(response){
+          if(response){
+            return response;
+
+          }
+          else if(event.request.headers.get("accept").includes("text/html")){
+            return caches.match("/")
+          }
+      })
+
     })
-  );
+  )
 });
 
   // self.addEventListener("activate", event => {
